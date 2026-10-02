@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class GradeCalculatorTest {
 
@@ -95,5 +97,28 @@ class GradeCalculatorTest {
         GradeCalculator calc = new GradeCalculator();
         assertThrows(IllegalArgumentException.class,
                 () -> calc.totalScore(10, 41, 10, 10, 30));
+    }
+
+    @ParameterizedTest
+    @DisplayName("Хязгаарын утгууд зөв дүн өгөх ёстой")
+    @CsvSource({"95,A", "90,A", "89.99,B", "80,B", "70,C", "60,D", "59.99,F", "0,F"})
+    void letterGradeBoundaries(double score, String expected) {
+        GradeCalculator calc = new GradeCalculator();
+        String grade = calc.letterGrade(score);
+        assertEquals(expected, grade);
+    }
+
+    @ParameterizedTest
+    @DisplayName("totalScore янз бүрийн оноогоор зөв нийлбэр өгөх ёстой")
+    @CsvSource({
+        "10, 40, 10, 10, 30, 100",
+        "0, 0, 0, 0, 0, 0",
+        "8, 30, 7, 6, 20, 71"
+    })
+    void totalScoreParameterized(double att, double lab, double q1, double q2,
+                                 double exam, double expected) {
+        GradeCalculator calc = new GradeCalculator();
+        double total = calc.totalScore(att, lab, q1, q2, exam);
+        assertEquals(expected, total, 0.0001);
     }
 }
