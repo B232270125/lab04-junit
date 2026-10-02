@@ -8,7 +8,7 @@ public class GradeCalculator {
         if (score < 0 || score > 100) {
             throw new IllegalArgumentException("Оноо 0-100 хооронд байх ёстой: " + score);
         }
-        if (score >= 90) {
+        if (score > 90) {
             return "A";
         } else if (score >= 80) {
             return "B";
